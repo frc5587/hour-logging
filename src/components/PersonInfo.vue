@@ -4,7 +4,7 @@
     <p>{{ name }}</p>
     <p>
       {{ hours }}<span class="time-label">h</span>
-      {{ minutes }}<span class="time-label">m</span>
+      {{ minutesMod }}<span class="time-label">m</span>
     </p>
   </div>
 </template>
@@ -20,9 +20,16 @@ export default {
   props: {
     id: Number,
     name: String,
-    hours: Number,
     minutes: Number,
     checkedIn: Boolean
+  },
+  computed: {
+    hours() {
+      return Math.floor(this.minutes / 60);
+    },
+    minutesMod() {
+      return this.minutes % 60;
+    }
   }
 };
 </script>
@@ -31,7 +38,7 @@ export default {
 .row-body {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 80px 80% 20%;
+  grid-template-columns: 80px 80% max-content;
 }
 .row-body:hover {
   background-color: #393939;
