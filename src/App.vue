@@ -25,6 +25,14 @@
     </div>
 
     <TheSearchbar @toggle-person="togglePerson"></TheSearchbar>
+
+    <Modal v-if="modalInfo.showModal"
+      :actionText="modalInfo.modalActionText"
+      :nameText="modalInfo.modalNameText"
+      :hideButton="true"
+      :timeoutMs="1500"
+      @close="modalInfo.showModal = false"
+    ></Modal>
   </div>
 </template>
 
@@ -33,6 +41,7 @@ import TheHeader from "./components/TheHeader";
 import SectionLabel from "./components/SectionLabel";
 import PersonInfo from "./components/PersonInfo";
 import TheSearchbar from "./components/TheSearchbar";
+import Modal from "./components/Modal";
 
 export default {
   name: "app",
@@ -40,10 +49,16 @@ export default {
     TheHeader,
     SectionLabel,
     PersonInfo,
-    TheSearchbar
+    TheSearchbar,
+    Modal
   },
   data() {
     return {
+      modalInfo: {
+        showModal: false,
+        modalActionText: String,
+        modalNameText: String
+      },
       people: [
         {
           id: 1,
@@ -71,6 +86,42 @@ export default {
     }
   },
   methods: {
+    findPerson(personIdentifier) {
+      if (!isNaN(personIdentifier)) {
+        // personIdentifier is the hexidecimal barcode number
+        return this.people.find(
+          person => person.id === parseInt(personIdentifier, 16)
+        );
+      } else {
+        // personIdentifier is their actual name
+        return this.people.find(person => person.name === personIdentifier);
+      }
+    },
+    showModal(actionText, nameText) {
+      const info = this.modalInfo;
+      info.modalActionText = actionText;
+      info.modalNameText = nameText;
+      info.showModal = true;
+    },
+    checkInPerson(person) {
+      person.checkedIn = true;
+      person.checkInDate = new Date();
+
+      // Show modal with notification
+      this.showModal("CHECKING IN", person.name);
+    },
+    checkOutPerson(person) {
+      const timeElapsedMin = minFromNow(person.checkInDate)
+
+      //TODO: Update database with timeElapsed data
+      person.minutes += Math.round(timeElapsedMin);
+
+      person.checkedIn = false;
+      person.checkInDate = null;
+
+      // Show modal with notification
+      this.showModal("CHECKING OUT", person.name);
+    },
     togglePerson(personIdentifier) {
       const person = this.findPerson(personIdentifier);
       if (person === undefined) {
@@ -79,34 +130,20 @@ export default {
 
       if (person.checkedIn) {
         // Check the person out now
-        const currentDate = new Date();
-        const timeElapsedMs = currentDate - person.checkInDate;
-        const timeElapsedMin = timeElapsedMs / 1000 / 60;
-
-        //TODO: Update database with timeElapsed data
-        person.minutes += Math.round(timeElapsedMin);
-
-        person.checkedIn = false;
-        person.checkInDate = null;
+        this.checkOutPerson(person);
       } else {
         // Check the person in now
-        person.checkedIn = true;
-        person.checkInDate = new Date();
+        this.checkInPerson(person);
       }
     },
-    findPerson(personIdentifier) {
-      if (!isNaN(personIdentifier)) {
-        // personIdentifier is the barcode number
-        return this.people.find(
-          person => person.id === parseInt(personIdentifier, 16)
-        );
-      } else {
-        // personIdentifier is their actual name
-        return this.people.find(person => person.name === personIdentifier);
-      }
-    }
   }
 };
+
+function minFromNow(date) {
+  const currentDate = new Date();
+  const timeElapsedMs = Math.abs(currentDate - date);
+  return timeElapsedMs / 1000 / 60;
+}
 </script>
 
 <style>
