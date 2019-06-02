@@ -11,6 +11,7 @@
         :name="person.name"
         :minutes="person.minutes"
         :checkedIn="person.checkedIn"
+        @toggle-person="togglePerson"
       ></PersonInfo>
 
       <SectionLabel v-if="peopleCheckedOut.length > 0" text="OUT"></SectionLabel>
@@ -21,12 +22,14 @@
         :name="person.name"
         :minutes="person.minutes"
         :checkedIn="person.checkedIn"
+        @toggle-person="togglePerson"
       ></PersonInfo>
     </div>
 
     <TheSearchbar @toggle-person="togglePerson" @typing="modalInfo.showModal = false"></TheSearchbar>
 
-    <Modal v-show="modalInfo.showModal"
+    <Modal
+      v-show="modalInfo.showModal"
       :actionText="modalInfo.modalActionText"
       :nameText="modalInfo.modalNameText"
       :timeoutMs="1500"
@@ -36,8 +39,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VueObserveVisibility from 'vue-observe-visibility';
+import Vue from "vue";
+import VueObserveVisibility from "vue-observe-visibility";
 import TheHeader from "./components/TheHeader";
 import SectionLabel from "./components/SectionLabel";
 import PersonInfo from "./components/PersonInfo";
@@ -114,7 +117,7 @@ export default {
       this.showModal("CHECKING IN", person.name);
     },
     checkOutPerson(person) {
-      const timeElapsedMin = minFromNow(person.checkInDate)
+      const timeElapsedMin = minFromNow(person.checkInDate);
 
       //TODO: Update database with timeElapsed data
       person.minutes += Math.round(timeElapsedMin);
@@ -138,7 +141,7 @@ export default {
         // Check the person in now
         this.checkInPerson(person);
       }
-    },
+    }
   }
 };
 

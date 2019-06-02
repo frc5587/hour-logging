@@ -1,5 +1,5 @@
 <template>
-  <div class="row-body">
+  <div class="row-body" @click="$emit('toggle-person', id)">
     <PersonInfoStatus :checkedIn="checkedIn"></PersonInfoStatus>
     <p>{{ name }}</p>
     <p>
