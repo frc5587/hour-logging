@@ -1,7 +1,7 @@
 <template>
   <div class="header-row">
-    <h1 class="name-entry">NAME</h1>
-    <h1 class="time-entry">TIME LOGGED</h1>
+    <h1 class="title name-entry">NAME</h1>
+    <h1 class="title time-entry">TIME LOGGED</h1>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
   grid-area: time;
 }
 
-h1 {
+.title {
   /* For vertical centring even when text wraps */
   margin: auto 0 auto 0;
   padding-top: 15px;

@@ -4,8 +4,8 @@
       <div class="modal-content" v-click-outside="$_close">
         <span class="close" @click="$_close">&times;</span>
         <div class="modal-body">
-          <h2>{{ actionText }}</h2>
-          <h1>{{ nameText }}</h1>
+          <h2 class="action-text">{{ actionText }}</h2>
+          <h1 class="name-text">{{ nameText }}</h1>
         </div>
       </div>
     </div>
@@ -136,11 +136,11 @@ export default {
   cursor: pointer;
 }
 
-h2 {
+.action-text {
   font-weight: normal;
   margin: 0;
 }
-h1 {
+.name-text {
   font-weight: bold;
   font-size: 2.5em;
   margin: 0;

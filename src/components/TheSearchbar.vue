@@ -4,6 +4,7 @@
       <input
         v-model="searchText"
         v-focus
+        class="searchbar"
         placeholder="Enter name or ID of person to check in or out"
         @keydown="$emit('typing')"
       >
@@ -42,7 +43,7 @@ export default {
   display: grid;
   grid-template-columns: 3.75% 92.5% 3.75%;
 }
-input {
+.searchbar {
   /* Fill the centre of the grid */
   grid-column-start: 2;
 

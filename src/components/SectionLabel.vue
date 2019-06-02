@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ text }}</h1>
+    <h1 class="label-text">{{ text }}</h1>
   </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style scoped>
-h1 {
+.label-text {
   /* Text styling */
   color: #787878;
   text-align: center;
