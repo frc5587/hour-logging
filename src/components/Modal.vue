@@ -1,8 +1,8 @@
 <template>
   <transition name="slide-in-out">
     <div class="modal-wrapper" v-observe-visibility="visibilityChanged">
-      <div class="modal-content">
-        <span class="close" @click="$emit('close')">&times;</span>
+      <div class="modal-content" v-click-outside="$_close">
+        <span class="close" @click="$_close">&times;</span>
         <div class="modal-body">
           <h2>{{ actionText }}</h2>
           <h1>{{ nameText }}</h1>
@@ -14,8 +14,13 @@
 
 
 <script>
+import vClickOutside from "v-click-outside";
+
 export default {
   name: "Modal",
+  directives: {
+    clickOutside: vClickOutside.directive
+  },
   props: {
     actionText: String,
     nameText: String,
@@ -23,7 +28,8 @@ export default {
   },
   data() {
     return {
-      closeTimer: null
+      closeTimer: null,
+      isVisible: false
     };
   },
   watch: {
@@ -49,12 +55,20 @@ export default {
       if (isVisible && this.timeoutMs > 0) {
         this.$_createTimer();
       }
+
+      this.isVisible = isVisible;
     },
     $_createTimer() {
       this.closeTimer = setTimeout(() => {
         this.$emit("close");
         this.closeTimer = null;
       }, this.timeoutMs);
+    },
+    $_close() {
+      // The modal should only close if it is actually shown
+      if (this.isVisible) {
+        this.$emit("close");
+      }
     }
   }
 };
@@ -132,7 +146,6 @@ h1 {
   margin: 0;
   margin-top: 5px;
 }
-
 
 /* Vue animation definitions start here */
 .slide-in-out-enter,

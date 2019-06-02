@@ -39,7 +39,7 @@ export default {
     }
   },
   timers: {
-    $_add_minute: { time: 1000, repeat: true }
+    $_add_minute: { time: 1000 * 60, repeat: true }
   },
   methods: {
     $_add_minute() {

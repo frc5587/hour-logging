@@ -117,6 +117,7 @@ export default {
       this.showModal("CHECKING IN", person.name);
     },
     checkOutPerson(person) {
+      // Dates are preferred over minute data from PersonInfo element because of accuracy
       const timeElapsedMin = minFromNow(person.checkInDate);
 
       //TODO: Update database with timeElapsed data
