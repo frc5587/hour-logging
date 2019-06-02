@@ -26,10 +26,9 @@
 
     <TheSearchbar @toggle-person="togglePerson"></TheSearchbar>
 
-    <Modal v-if="modalInfo.showModal"
+    <Modal v-show="modalInfo.showModal"
       :actionText="modalInfo.modalActionText"
       :nameText="modalInfo.modalNameText"
-      :hideButton="true"
       :timeoutMs="1500"
       @close="modalInfo.showModal = false"
     ></Modal>
@@ -37,11 +36,15 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueObserveVisibility from 'vue-observe-visibility';
 import TheHeader from "./components/TheHeader";
 import SectionLabel from "./components/SectionLabel";
 import PersonInfo from "./components/PersonInfo";
 import TheSearchbar from "./components/TheSearchbar";
 import Modal from "./components/Modal";
+
+Vue.use(VueObserveVisibility);
 
 export default {
   name: "app",
@@ -56,8 +59,8 @@ export default {
     return {
       modalInfo: {
         showModal: false,
-        modalActionText: String,
-        modalNameText: String
+        modalActionText: "",
+        modalNameText: ""
       },
       people: [
         {

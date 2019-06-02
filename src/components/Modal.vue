@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-wrapper">
+  <div class="modal-wrapper" v-observe-visibility="visibilityChanged">
     <div class="modal-content">
       <span class="close" @click="$emit('close')">&times;</span>
       <div class="modal-body">
@@ -17,13 +17,41 @@ export default {
   props: {
     actionText: String,
     nameText: String,
-    hideButton: Boolean,
     timeoutMs: Number
   },
-  mounted() {
-    if (this.timeoutMs > 0) {
-      setTimeout(() => {
+  data() {
+    return {
+      closeTimer: null
+    };
+  },
+  watch: {
+    // Both actionText and nameText need to be watched to cover all cases
+    actionText() {
+      // The modal is currrently visible but we're updating things, so refresh the timer
+      if (this.closeTimer !== null && this.timeoutMs > 0) {
+        clearTimeout(this.closeTimer);
+        this.$_createTimer();
+      }
+    },
+    nameText() {
+      // The modal is currrently visible but we're updating things, so refresh the timer
+      if (this.closeTimer !== null && this.timeoutMs > 0) {
+        clearTimeout(this.closeTimer);
+        this.$_createTimer();
+      }
+    }
+  },
+  methods: {
+    visibilityChanged(isVisible) {
+      // Set the timer (if there is a non-default/non-zero timeout set)
+      if (isVisible && this.timeoutMs > 0) {
+        this.$_createTimer();
+      }
+    },
+    $_createTimer() {
+      this.closeTimer = setTimeout(() => {
         this.$emit("close");
+        this.closeTimer = null;
       }, this.timeoutMs);
     }
   }
