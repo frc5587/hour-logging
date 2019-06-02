@@ -1,13 +1,15 @@
 <template>
-  <div class="modal-wrapper" v-observe-visibility="visibilityChanged">
-    <div class="modal-content">
-      <span class="close" @click="$emit('close')">&times;</span>
-      <div class="modal-body">
-        <h2>{{ actionText }}</h2>
-        <h1>{{ nameText }}</h1>
+  <transition name="slide-in-out">
+    <div class="modal-wrapper" v-observe-visibility="visibilityChanged">
+      <div class="modal-content">
+        <span class="close" @click="$emit('close')">&times;</span>
+        <div class="modal-body">
+          <h2>{{ actionText }}</h2>
+          <h1>{{ nameText }}</h1>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 
@@ -129,5 +131,28 @@ h1 {
   font-size: 2.5em;
   margin: 0;
   margin-top: 5px;
+}
+
+
+/* Vue animation definitions start here */
+.slide-in-out-enter,
+.slide-in-out-leave-to {
+  transform: translateY(50%);
+  opacity: 0;
+}
+
+.slide-in-out-enter-to,
+.slide-in-out-leave {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.slide-in-out-enter-active {
+  transition-timing-function: ease-in;
+  transition: 0.2s;
+}
+.slide-in-out-leave-active {
+  transition-timing-function: ease-out;
+  transition: 0.15s;
 }
 </style>
