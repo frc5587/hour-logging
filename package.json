@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
-    "vue-observe-visibility": "^0.4.4"
+    "vue-observe-visibility": "^0.4.4",
+    "vue-timers": "^2.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

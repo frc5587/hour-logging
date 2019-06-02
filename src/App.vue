@@ -1,40 +1,40 @@
 <template>
   <div id="app">
-    <TheHeader></TheHeader>
+    <TheHeader/>
 
     <div>
-      <SectionLabel v-if="peopleCheckedIn.length > 0" text="IN"></SectionLabel>
+      <SectionLabel v-if="peopleCheckedIn.length > 0" text="IN"/>
       <PersonInfo
         v-for="person in peopleCheckedIn"
         :key="person.id"
         :id="person.id"
         :name="person.name"
-        :minutes="person.minutes"
-        :checkedIn="person.checkedIn"
+        :initial-minutes="person.minutes"
+        :checked-in="person.checkedIn"
         @toggle-person="togglePerson"
-      ></PersonInfo>
+      />
 
-      <SectionLabel v-if="peopleCheckedOut.length > 0" text="OUT"></SectionLabel>
+      <SectionLabel v-if="peopleCheckedOut.length > 0" text="OUT"/>
       <PersonInfo
         v-for="person in peopleCheckedOut"
         :key="person.id"
         :id="person.id"
         :name="person.name"
-        :minutes="person.minutes"
-        :checkedIn="person.checkedIn"
+        :initial-minutes="person.minutes"
+        :checked-in="person.checkedIn"
         @toggle-person="togglePerson"
-      ></PersonInfo>
+      />
     </div>
 
-    <TheSearchbar @toggle-person="togglePerson" @typing="modalInfo.showModal = false"></TheSearchbar>
+    <TheSearchbar @toggle-person="togglePerson" @typing="modalInfo.showModal = false"/>
 
     <Modal
       v-show="modalInfo.showModal"
-      :actionText="modalInfo.modalActionText"
-      :nameText="modalInfo.modalNameText"
-      :timeoutMs="1500"
+      :action-text="modalInfo.modalActionText"
+      :name-text="modalInfo.modalNameText"
+      :timeout-ms="1500"
       @close="modalInfo.showModal = false"
-    ></Modal>
+    />
   </div>
 </template>
 
