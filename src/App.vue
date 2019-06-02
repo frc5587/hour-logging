@@ -24,7 +24,7 @@
       ></PersonInfo>
     </div>
 
-    <TheSearchbar @toggle-person="togglePerson"></TheSearchbar>
+    <TheSearchbar @toggle-person="togglePerson" @typing="modalInfo.showModal = false"></TheSearchbar>
 
     <Modal v-show="modalInfo.showModal"
       :actionText="modalInfo.modalActionText"

@@ -1,7 +1,12 @@
 <template>
   <div>
     <form @submit.prevent="togglePerson" class="input-wrapper">
-      <input v-model="searchText" placeholder="Enter name or ID of person to check in or out">
+      <input
+        v-model="searchText"
+        v-focus
+        placeholder="Enter name or ID of person to check in or out"
+        @keydown="$emit('typing')"
+      >
     </form>
   </div>
 </template>
@@ -9,6 +14,14 @@
 <script>
 export default {
   name: "TheSearchbar",
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+        el.addEventListener("blur", el.focus);
+      }
+    }
+  },
   data() {
     return {
       searchText: ""
