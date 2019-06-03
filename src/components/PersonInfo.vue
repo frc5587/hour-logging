@@ -2,7 +2,7 @@
   <div class="row-body" @click="$emit('toggle-person', id)">
     <PersonInfoStatus :checked-in="checkedIn"/>
     <p>{{ name }}</p>
-    <p>
+    <p class="time-entry">
       {{ hours }}<span class="time-label">h</span>
       {{ minutesMod }}<span class="time-label">m</span>
     </p>
@@ -67,7 +67,7 @@ export default {
 .row-body {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 80px 80% max-content;
+  grid-template-columns: 80px 70% auto;
 }
 .row-body:hover {
   background-color: #393939;
@@ -80,7 +80,11 @@ p {
   font-size: 1.1em;
   color: #acacac;
 }
+.time-entry {
+  text-align: right;
+  margin-right: 100px;
+}
 .time-label {
-  font-size: 0.75em;
+  font-size: 0.8em;
 }
 </style>

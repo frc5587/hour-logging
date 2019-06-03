@@ -15,7 +15,7 @@ export default {
 .header-row {
   /* Grid is designed to compliment the grid in PersonInfo */
   display: grid;
-  grid-template-columns: 80px 78.5% 11.5%;
+  grid-template-columns: 80px 70% auto;
   grid-template-areas: ". name time";
 
   background-color: #bc0f20;
@@ -25,16 +25,19 @@ export default {
 }
 .time-entry {
   grid-area: time;
+  text-align: right;
+  margin-right: 82.5px;
 }
 
 .title {
   /* For vertical centring even when text wraps */
-  margin: auto 0 auto 0;
+  margin-top: auto;
+  margin-bottom: auto;
   padding-top: 15px;
   padding-bottom: 15px;
 
   color: white;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 </style>
