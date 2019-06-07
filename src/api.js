@@ -1,15 +1,24 @@
 import { Student } from "./students";
+import axios from "axios";
 
-const API_URL = "http://localhost:8081";
+const API_URL = "http://localhost:8081/";
 
-// Simple wrapper for fetching data
-async function get(resource) {
-  return fetch(`${API_URL}${resource}`).then(response => response.json());
+const client = axios.create({
+  baseURL: API_URL,
+  json: true
+});
+
+async function execute(method, url, data) {
+  return client({
+    method,
+    url,
+    data
+  }).then(req => req.data);
 }
 
 export default {
   async getStudents() {
-    return get("/students").then(data => {
+    return execute("get", "/students").then(data => {
       const students = [];
 
       // Convert the data into the student format expected by Vue
@@ -24,6 +33,11 @@ export default {
       }
 
       return students;
+    });
+  },
+  async updateStudent(student) {
+    execute("put", `/student/${student.id}`, {
+      minutes: student.minutes
     });
   }
 };

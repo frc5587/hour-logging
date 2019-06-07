@@ -108,8 +108,10 @@ export default {
       // Dates are preferred over minute data from PersonInfo element because of accuracy
       const timeElapsedMin = minFromNow(person.checkInDate);
 
-      //TODO: Update database with timeElapsed data
       person.minutes += Math.round(timeElapsedMin);
+
+      // Update the server with the new minutes information
+      api.updateStudent(person);
 
       person.checkedIn = false;
       person.checkInDate = null;
