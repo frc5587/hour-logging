@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mysql": "^2.17.1",
     "v-click-outside": "^2.1.3",

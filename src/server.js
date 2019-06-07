@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
 const express = require("express");
 const mysql = require('mysql');
+const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
+app.use(cors());
 
 const config = JSON.parse(fs.readFileSync(`${__dirname}/credentials.json`, 'utf8'));
 const database = mysql.createConnection({

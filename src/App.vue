@@ -40,6 +40,7 @@
 
 <script>
 import Vue from "vue";
+import api from "./api";
 import VueObserveVisibility from "vue-observe-visibility";
 import TheHeader from "./components/TheHeader";
 import SectionLabel from "./components/SectionLabel";
@@ -65,22 +66,7 @@ export default {
         modalActionText: "",
         modalNameText: ""
       },
-      people: [
-        {
-          id: 1,
-          name: "Jane Doe",
-          minutes: 223,
-          checkedIn: false,
-          checkInDate: null
-        },
-        {
-          id: 2,
-          name: "John Doe",
-          minutes: 957,
-          checkedIn: true,
-          checkInDate: new Date()
-        }
-      ]
+      people: []
     };
   },
   computed: {
@@ -91,13 +77,14 @@ export default {
       return this.people.filter(person => !person.checkedIn);
     }
   },
+  async created() {
+    this.people = await api.getStudents();
+  },
   methods: {
     findPerson(personIdentifier) {
       if (!isNaN(personIdentifier)) {
-        // personIdentifier is the hexidecimal barcode number
-        return this.people.find(
-          person => person.id === parseInt(personIdentifier, 16)
-        );
+        // personIdentifier is a 9-digit integer
+        return this.people.find(person => person.id === personIdentifier);
       } else {
         // personIdentifier is their actual name
         return this.people.find(person => person.name === personIdentifier);
