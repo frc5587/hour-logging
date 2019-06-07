@@ -47,6 +47,7 @@ import SectionLabel from "./components/SectionLabel";
 import PersonInfo from "./components/PersonInfo";
 import TheSearchbar from "./components/TheSearchbar";
 import Modal from "./components/Modal";
+import { Student } from "./students";
 
 Vue.use(VueObserveVisibility);
 
@@ -66,7 +67,7 @@ export default {
         modalActionText: "",
         modalNameText: ""
       },
-      people: []
+      people: [Student]
     };
   },
   computed: {
