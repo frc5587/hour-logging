@@ -60,13 +60,13 @@ export default {
     },
     $_createTimer() {
       this.closeTimer = setTimeout(() => {
-        this.$emit("close");
-        this.closeTimer = null;
+        this.$_close();
       }, this.timeoutMs);
     },
     $_close() {
       // The modal should only close if it is actually shown
       if (this.isVisible) {
+        this.closeTimer = null;
         this.$emit("close");
       }
     }
