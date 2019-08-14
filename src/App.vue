@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <TheHeader/>
+    <TheHeader />
 
     <div>
-      <SectionLabel v-if="peopleCheckedIn.length > 0" text="IN"/>
+      <SectionLabel v-if="peopleCheckedIn.length > 0" text="IN" />
       <PersonInfo
         v-for="person in peopleCheckedIn"
         :key="person.id"
@@ -14,7 +14,7 @@
         @toggle-person="togglePerson"
       />
 
-      <SectionLabel v-if="peopleCheckedOut.length > 0" text="OUT"/>
+      <SectionLabel v-if="peopleCheckedOut.length > 0" text="OUT" />
       <PersonInfo
         v-for="person in peopleCheckedOut"
         :key="person.id"
@@ -26,7 +26,7 @@
       />
     </div>
 
-    <TheSearchbar @toggle-person="togglePerson" @typing="modalInfo.showModal = false"/>
+    <TheSearchbar @toggle-person="togglePerson" @typing="modalInfo.showModal = false" />
 
     <Modal
       v-show="modalInfo.showModal"
@@ -47,7 +47,7 @@ import SectionLabel from "./components/SectionLabel";
 import PersonInfo from "./components/PersonInfo";
 import TheSearchbar from "./components/TheSearchbar";
 import Modal from "./components/Modal";
-import { Student } from "./students";
+import { Student } from "./models/student";
 
 Vue.use(VueObserveVisibility);
 
@@ -84,8 +84,9 @@ export default {
   methods: {
     findPerson(personIdentifier) {
       if (!isNaN(personIdentifier)) {
-        // personIdentifier is a 9-digit integer
-        return this.people.find(person => person.id === personIdentifier);
+        // personIdentifier is a 9-digit integer, but needs to be converted from string
+        const identifier = parseInt(personIdentifier);
+        return this.people.find(person => person.id === identifier);
       } else {
         // personIdentifier is their actual name
         return this.people.find(person => person.name === personIdentifier);
