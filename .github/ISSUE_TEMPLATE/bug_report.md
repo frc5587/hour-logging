@@ -8,27 +8,33 @@ assignees: ''
 ---
 
 ## Describe the bug
+
 A clear and concise description of what the bug is.
 
 ## Expected behaviour
+
 A clear and concise description of what you expected to happen.
 
-## Actual Behaviour
+## Actual behaviour
+
 A clear and concise description of what happened in place of the expected behaviour.
 
 ## Screenshots
+
 If applicable, add screenshots to help explain your problem.
 
-## Steps To Reproduce
+## Steps to reproduce
+
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
+2. Click on '...'
+3. Scroll down to '...'
 4. See error
 
-## System Information
- - OS: [e.g. Windows]
- - Browser [e.g. chrome, safari]
- - Output of `node -v` [e.g. `v10.16.2`]
- - Output of `vue --version` [e.g. `3.9.2`]
+## System information
+
+- OS: [e.g. Windows]
+- Browser [e.g. Chrome, Safari]
+- Output of `node -v` [e.g. `v10.16.2`]
+- Output of `vue --version` [e.g. `3.9.2`]
 
 <!-- Add any other context about the problem here. -->

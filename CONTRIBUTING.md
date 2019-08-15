@@ -20,7 +20,7 @@ If you encounter any issues with the hour logging system, simply create an issue
 
 ## Creating a Pull Request
 
-Pull requests for new features, bug fixes, etc. are greatly appreciated! Just make sure of a few things before submitting your PR
+Pull requests for new features, bug fixes, etc. are greatly appreciated! Just make sure of a few things before submitting your PR:
 
 1. Running `npm run build` then `npm start` results in no errors
 2. You have an issue filed that has to do with the changes in the PR
@@ -28,9 +28,9 @@ Pull requests for new features, bug fixes, etc. are greatly appreciated! Just ma
 
 ## Resources
 
-If you want to help, but don't know enough about any aspect of the project, simply take a look at some of the following resources:
+If you want to help but don't know enough about any aspect of the project, simply take a look at some of the following resources:
 
- - [Vue Guide](https://vuejs.org/v2/guide/)
- - [Getting Started with Node.js](https://codeburst.io/getting-started-with-node-js-a-beginners-guide-b03e25bca71b)
- - [Basics of Express](https://www.freecodecamp.org/news/going-out-to-eat-and-understanding-the-basics-of-express-js-f034a029fb66/)
- - [W3Schools SQL Guide](https://www.w3schools.com/sql/default.asp)
+- [Vue Guide](https://vuejs.org/v2/guide/)
+- [Getting Started with Node.js](https://codeburst.io/getting-started-with-node-js-a-beginners-guide-b03e25bca71b)
+- [Basics of Express](https://www.freecodecamp.org/news/going-out-to-eat-and-understanding-the-basics-of-express-js-f034a029fb66/)
+- [W3Schools SQL Guide](https://www.w3schools.com/sql/default.asp)
