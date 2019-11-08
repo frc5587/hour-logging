@@ -19,7 +19,7 @@ import vClickOutside from "v-click-outside";
 export default {
   name: "Modal",
   directives: {
-    clickOutside: vClickOutside.directive
+    clickOutside: vClickOutside.directive  // Used on `modal-content` div
   },
   props: {
     actionText: String,
@@ -37,20 +37,18 @@ export default {
     actionText() {
       // The modal is currrently visible but we're updating things, so refresh the timer
       if (this.closeTimer !== null && this.timeoutMs > 0) {
-        clearTimeout(this.closeTimer);
-        this.$_createTimer();
+        this.$_resetTimer();
       }
     },
     nameText() {
       // The modal is currrently visible but we're updating things, so refresh the timer
       if (this.closeTimer !== null && this.timeoutMs > 0) {
-        clearTimeout(this.closeTimer);
-        this.$_createTimer();
+        this.$_resetTimer();
       }
     }
   },
   methods: {
-    visibilityChanged(isVisible) {
+    visibilityChanged(isVisible) { // v-observe-visibility
       // Set the timer (if there is a non-default/non-zero timeout set)
       if (isVisible && this.timeoutMs > 0) {
         this.$_createTimer();
@@ -63,9 +61,14 @@ export default {
         this.$_close();
       }, this.timeoutMs);
     },
+    $_resetTimer() {
+      clearTimeout(this.closeTimer);
+      this.$_createTimer();
+    },
     $_close() {
       // The modal should only close if it is actually shown
       if (this.isVisible) {
+        clearTimeout(this.closeTimer);
         this.closeTimer = null;
         this.$emit("close");
       }

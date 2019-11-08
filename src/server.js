@@ -2,15 +2,15 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const path = require("path");
 const fs = require("fs");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const config = JSON.parse(
-  fs.readFileSync(`${__dirname}/credentials.json`, "utf8")
-);
+const credentialsPath = path.join(__dirname, "..", "credentials.json");
+const config = JSON.parse(fs.readFileSync(credentialsPath, "utf8"));
 const database = mysql.createConnection({
   host: "localhost",
   user: config.username,
@@ -42,9 +42,7 @@ app.get("/students", (_req, res) => {
 });
 
 app.put("/student/:studentID", req => {
-  const query = `UPDATE ${config.table} SET minutes=${
-    req.body.minutes
-  } WHERE student_id=${req.params.studentID}`;
+  const query = `UPDATE ${config.table} SET minutes=${req.body.minutes} WHERE student_id=${req.params.studentID}`;
 
   database.query(query, err => {
     if (err) throw err;
