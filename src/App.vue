@@ -2,7 +2,7 @@
   <div id="app">
     <TheHeader />
 
-    <div>
+    <div class="people-table">
       <SectionLabel v-if="peopleCheckedIn.length > 0" text="IN" />
       <PersonInfo
         v-for="person in peopleCheckedIn"
@@ -163,5 +163,9 @@ body {
   /* Display as grid to separate people and searchbar */
   display: grid;
   grid-template-rows: auto 87% auto;
+}
+.people-table {
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 </style>
