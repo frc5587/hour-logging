@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "concurrently -n server,web --kill-others \"npm:server\" \"serve\" ",
+    "start": "concurrently -n server,web --kill-others \"node ./src/server.js\" \"serve\" ",
     "dev": "concurrently -n server,web --kill-others \"npm:server\" \"npm:serve\"",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
