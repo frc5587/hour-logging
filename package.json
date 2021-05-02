@@ -1,60 +1,41 @@
 {
   "name": "hour-logging",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "start": "concurrently -n server,web --kill-others \"node ./src/server.js\" \"serve\" ",
-    "dev": "concurrently -n server,web --kill-others \"npm:server\" \"npm:serve\"",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "server": "nodemon ./src/server.js"
-  },
   "dependencies": {
-    "axios": "^0.19.2",
-    "core-js": "^2.6.11",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mysql": "^2.18.1",
-    "v-click-outside": "^2.1.5",
-    "vue": "^2.6.11",
-    "vue-observe-visibility": "^0.4.6",
-    "vue-timers": "^2.0.4"
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "google-spreadsheet": "^3.1.15",
+    "googleapis": "^39.2.0",
+    "node-sass": "^5.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.1"
   },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^3.12.1",
-    "@vue/cli-service": "^3.12.1",
-    "@vue/eslint-config-prettier": "^4.0.1",
-    "babel-eslint": "^10.0.3",
-    "concurrently": "^4.1.2",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.2.3",
-    "nodemon": "^1.19.4",
-    "serve": "^11.3.0",
-    "vue-template-compiler": "^2.6.11"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
     "extends": [
-      "plugin:vue/essential",
-      "@vue/prettier"
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
     ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
