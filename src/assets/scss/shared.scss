@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto:wght@400;700&display=swap"); // Roboto and Montserrat
 
 $bg-color: #272b30;
-$text-color: lightgray;
+$dark-bg-color: #202225;
+$text-color: #D3D3D3;
 
 $TR-blue: #2a397c;
 $light-blue: #3d50af;
@@ -58,6 +59,18 @@ input {
     }
 }
 
+li {
+    border-radius: 5px;
+}
+
+li p, li h3 {
+    margin: 4px 0;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
 ul.series {
     list-style: none;
     padding: 10px;
@@ -67,14 +80,6 @@ ul.series {
     li:nth-child(2n) {
         background-color: rgba($TR-blue, 0.2)
     }
-}
-
-li {
-    border-radius: 5px;
-}
-
-li p, li h3 {
-    margin: 4px 0;
 }
 
 #logo {
@@ -108,11 +113,8 @@ li p, li h3 {
 }
 
 .row {
-    display: flex;
-    flex-flow: row wrap;
-    margin-bottom: 1rem;
-    margin-left: auto;
-    margin-right: auto;
+    display: inline-flex;
+    margin: .5rem auto;
 }
 
 .col {
@@ -162,6 +164,7 @@ li p, li h3 {
     }
 }
 
+
 .btn-container {
     position: relative;
     z-index: 1;
@@ -173,14 +176,14 @@ li p, li h3 {
     position: relative;
     font-size: 1.5rem;
     background-color: rgba($TR-blue, 0.4);
-
+    
     &:hover {
         &::before {
             height: 100%;
             transform: scaleX(1);
         }
     }
-
+    
     &::before {
         content: "";
         position: absolute;
@@ -195,11 +198,15 @@ li p, li h3 {
     }
 }
 
-.row-input {
-    text-align: center;
-    width: 100%;
-    justify-content: center;
+.small-btn-primary {
+    @extend .btn;
+    @extend .btn-primary;
 
+    padding: 8px 18px;
+    font-size: 1.2rem;
+}
+
+.row-input {
     input,
     button {
         margin: 0 10px;
@@ -229,7 +236,7 @@ li p, li h3 {
     }
 }
 
-.logged-in-list-item {
+.clocked-in-list-item {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     column-gap: 20px;
@@ -244,6 +251,46 @@ li p, li h3 {
     * {
         margin: auto 0;
     }
+}
+
+.drop-down {
+    position: absolute;
+    transition: 0s;
+    padding: 16px 0;
+
+    .autocomplete {
+        color: rgba($text-color, .5);
+        font-size: 1.5rem;
+        margin: 0;
+        padding: 0 24px;
+        height: 29px;
+    }
+
+    ul.drop-down-box {
+        list-style: none;
+        padding: 0;
+        background-color: $dark-bg-color;
+        padding: 18px 8px;
+        width: calc(100% + 8px);
+        margin: 24px 0;
+        border-radius: 18px;
+
+        li {
+            p {
+                padding: 4px 16px;
+                cursor: pointer;
+                margin: 0;
+            }
+
+            &:hover {
+                background-color: rgba($TR-blue, .2);
+            }
+        }
+    }
+}
+
+.pos-relative {
+    position: relative;
 }
 
 /*

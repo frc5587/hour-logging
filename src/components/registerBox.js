@@ -7,11 +7,12 @@ export default class RegisterBox extends React.Component {
     constructor() {
         super()
 
-        this.state = {nameValue: "", idValue: "", error: false}
+        this.state = {nameValue: "", idValue: "", error: ""}
 
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleIdChange = this.handleIdChange.bind(this)
         this.handleClick = this.handleClick.bind(this)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
     }
 
     handleNameChange(event) {
@@ -22,12 +23,20 @@ export default class RegisterBox extends React.Component {
         this.setState({idValue: event.target.value})
     }
 
+    handleKeyPress(event) {
+        if (event.key === "Enter") {
+            this.handleClick()
+            event.target.blur()
+        }
+    }
+
     handleClick() {
         if (this.state.nameValue === "" || this.state.idValue === "") {
-            this.setState({error: true})
+            this.setState({error: "Invalid input"})
         } else {
-            this.setState({error: false})
-            registerMember(this.state.nameValue, this.state.idValue).then(updated => updated ? this.clearValues() : null)
+            this.setState({error: ""})
+            this.clearValues()
+            registerMember(this.state.nameValue, this.state.idValue).then(updated => updated ? null : this.setState({error: "Duplicate Member Entry"}))
         }
     }
 
@@ -39,11 +48,11 @@ export default class RegisterBox extends React.Component {
         return (
             <>
                 <div className="row row-input">
-                    <input type="text" placeholder="Name" value={this.state.nameValue} onChange={this.handleNameChange}/>
-                    <input type="number" placeholder="School ID" value={this.state.idValue} onChange={this.handleIdChange}/>
+                    <input type="text" placeholder="Name" value={this.state.nameValue} onChange={this.handleNameChange} onKeyPress={this.handleKeyPress}/>
+                    <input type="number" placeholder="School ID" value={this.state.idValue} onChange={this.handleIdChange} onKeyPress={this.handleKeyPress}/>
                     <Button onClick={this.handleClick}>Register</Button>
                 </div>
-                {this.state.error ? <h3 className="error">Error: Invalid input</h3> : ""}
+                {this.state.error ? <h3 className="error">Error: {this.state.error}</h3> : ""}
             </>
         )
     }
