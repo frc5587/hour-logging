@@ -1,65 +1,70 @@
-# Hour Logging
+# Getting Started with Create React App
 
-## Setup
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-1. Install NodeJS. For Raspberry Pi, use the instructions from [here](https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/), replacing "10.x" with the most recent variant of NodeJS
-2. Install all of the Node dependencies for this project:
+## Available Scripts
 
-```bash
-npm install
-```
+In the project directory, you can run:
 
-3. Install MySQL, using [this guide](https://pimylifeup.com/raspberry-pi-mysql/) for Raspberry Pi instructions.
-4. Create a new database and a students table in it, updating fields in angle brackets with your information:
+### `npm start`
 
-```sql
-CREATE DATABASE hour_logging;
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-USE hour_logging;
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-CREATE TABLE students(
-    `id` mediumint UNSIGNED NOT NULL AUTO_INCREMENT,
-    `student_id` int(9) UNSIGNED NOT NULL,
-    `student_name` varchar(255) NOT NULL,
-    `minutes` mediumint(255) UNSIGNED NOT NULL,
-    PRIMARY KEY (`id`)
-);
-```
+### `npm test`
 
-5. Set up the user profile for MySQL and grant it the necessary privileges, refreshing MySQL's privileges afterwards:
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-```sql
-CREATE USER '<username>'@'localhost' IDENTIFIED BY '<password>';
+### `npm run build`
 
-GRANT SELECT, UPDATE ON hour_logging.students TO `<username>`@`localhost`;
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-FLUSH PRIVILEGES;
-```
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-6. Update [`src/credentials.json`](src/credentials.json) with the information you used when setting up the SQL server in steps 4 and 5.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-## Start the Application
+### `npm run eject`
 
-First, build the frontend:
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-```bash
-npm run build
-```
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Then, to run the server that exposes the student hours data and serve the generated frontend build, use
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-```bash
-npm run start
-```
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Developing
+## Learn More
 
-To run the backend server and the Vue development server, simply run
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-```bash
-npm run dev
-```
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-From there, whenever you edit a file, Node or Vue will update the backend and frontend respectively without you needing to restart anything.
+### Code Splitting
 
-For reference, the server is strictly contained in [`src/server.js`](src/server.js) and interacts with [`src/credentials.json`](src/credentials.json), while the rest of the code in the `src/` directory and its subdirectories are for the Vue frontend.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
