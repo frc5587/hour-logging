@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+## To Run the App
+Before you start any of this, make you have `Node.js`, `npm`, `npx`, and `React.js` installed 
+
+1) Make sure you have the service account authentication token (`service_auth_token.json`) in `src/assets/tokens/`
+2) Run `npm install` to install all the dependence
+3) Run `npm run build` to build the project
+4) Run `serve -s build -l 80` to serve the project on port 80
+
 ## Available Scripts
 
 In the project directory, you can run:
