@@ -78,7 +78,7 @@ export default class ClockInBox extends React.Component {
     closeDropDown() {
         // delay so that when someone clicks on the drop down menu it doesn't immediately close
         // instead, it can now process their input
-        setTimeout(() => this.setState({showDropDown: false}), 100)
+        setTimeout(() => this.setState({showDropDown: false}), 500)
     }
 
     handleClockInClick() {
@@ -95,7 +95,7 @@ export default class ClockInBox extends React.Component {
 
     handleDropDownItemClick(memberData) {
         this.changeInputTextTo(this.format(memberData))
-        setTimeout(this.handleClockInClick, 200)  // delay to allow state to update
+        setTimeout(this.handleClockInClick, 500)  // delay to allow state to update
     }
 
     handleKeyPress(event) {

@@ -293,6 +293,30 @@ ul.series {
     position: relative;
 }
 
+.empty-container {
+    display: flex;
+    flex-direction: row;
+}
+
+div.loader {
+    width: 20px;
+    height: 20px;
+    border-radius: 1000px;
+    border-top: 5px solid $text-color;
+    animation: rotate360 1s linear 0 infinite forwards normal;
+}
+
+@keyframes rotate360 {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: 360deg;
+    }
+    
+}
+
 /*
 Remove the up/down arrows from number input 
 Chrome, Safari, Edge, Opera */
