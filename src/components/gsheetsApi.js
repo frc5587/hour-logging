@@ -9,7 +9,25 @@ var loaded = false
 const loader = (async () => {
     await doc.useServiceAccountAuth(credentials)
     await doc.loadInfo()
+
+    checkIfLoggedInTooLong()
+    setInterval(checkIfLoggedInTooLong, 3600000) // repeats every hour
 })().then(() => loaded = true)
+
+export async function checkIfLoggedInTooLong() {
+    const rows = await getAllSignedIn()
+    const peopleToSignOut = []
+
+    for (let row of rows) {
+        if (new Date(row["Date"]) < getTodaysDate()) {
+            peopleToSignOut.push(row["ID"])
+        }
+    }
+
+    for (let id of peopleToSignOut) {
+        await signOut(id, "18:00")  // signs people out at 6:00 pm
+    }
+}
 
 export async function getSheet(sheetName) {
     if (loaded) {
@@ -78,7 +96,7 @@ export async function registerMember(name, id) {
             return true
         }
     } else {
-        const membersSheet = doc.sheetsByTitle["Members"]
+        const membersSheet = getSheet("Members")
         await membersSheet.addRow({Name: name, ID: id, "Date Added": getDateTime()[0]})
         return true
     }
@@ -130,7 +148,6 @@ export async function signOut(id, outTime) {
     return false
 }
 
-
 function getDateTime() {
     const datetime = new Date()
 
@@ -138,5 +155,9 @@ function getDateTime() {
 }
 
 function zeroPad(string) {
-    return string.length === 1? "0" + string : string
+    return ("" + string).length === 1? "0" + string : string
+}
+
+function getTodaysDate() {
+    return new Date(new Date().toLocaleDateString())
 }

@@ -25,7 +25,7 @@ export default class SignedInList extends React.Component {
                 </li>
                 {
                     this.props.signedIn.length > 0? 
-                    this.props.signedIn.map(log => <SignedInItem data={log} onSignedOutBtn={() => this.signOut(log.ID)}/>) : 
+                    this.props.signedIn.map((log, i) => <SignedInItem data={log} onSignedOutBtn={() => this.signOut(log.ID)} key={i}/>) : 
                         <li className="flex-center"><h3>No one is signed in</h3></li>
                 }
             </ul>

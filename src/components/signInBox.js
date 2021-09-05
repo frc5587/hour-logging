@@ -89,7 +89,7 @@ export default class SignInBox extends React.Component {
             this.changeInputTextTo("")
             setTimeout(this.props.updateFunc, 3000)
         } else if (this.state.nameIdValue !== "") {
-            this.setState({error: "Unrecognized Member"})
+            this.setState({error: "Unknown Member"})
         }
     }
 
@@ -122,7 +122,7 @@ export default class SignInBox extends React.Component {
         return (
             <>
                 <div className="row row-input pos-relative">
-                    <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "25vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onFocus={this.openDropDown} onBlur={this.closeDropDown} onKeyPress={this.handleKeyPress} />
+                    <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "40vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onFocus={this.openDropDown} onBlur={this.closeDropDown} onKeyPress={this.handleKeyPress} />
                     <Button onClick={this.handleSignInClick}>Sign In</Button>
                     {this.state.showDropDown ? 
                         <div className="drop-down" style={{transform: `translate(${x}px, ${y}px)`, width: `${width}px`}}>
@@ -141,7 +141,7 @@ function DropDown ({data, onItemClick, format}) {
     if (data.length > 0) {
         return (
             <ul className="drop-down-box" tabIndex="0">
-                {data.map(member => <li><p onClick={() => onItemClick(member)}>{format(member)}</p></li>)}
+                {data.map((member, i) => <li key={i}><p onClick={() => onItemClick(member)}>{format(member)}</p></li>)}
             </ul>
         )
     } else {
