@@ -2,27 +2,27 @@ import React from 'react';
 import "./assets/scss/shared.scss"
 import roboticsLogo from "./assets/images/robotics_logo.svg"
 import RegisterBox from "./components/registerBox"
-import ClockInBox from "./components/clockInBox"
-import ClockedInList from "./components/clockedInList"
-import {getAllClockedIn} from "./components/gsheetsApi"
+import SignInBox from "./components/signInBox"
+import SignedInList from "./components/signedInList"
+import {getAllSignedIn} from "./components/gsheetsApi"
 
 
 export default class App extends React.Component {
     constructor() {
         super()
 
-        this.state = {currentlyClockedIn: []}
+        this.state = {currentlySignedIn: []}
 
-        this.updateClockedIn = this.updateClockedIn.bind(this)
+        this.updateSignedIn = this.updateSignedIn.bind(this)
     }
 
     componentDidMount() {
-        this.updateClockedIn()
+        this.updateSignedIn()
     }
 
-    updateClockedIn() {
+    updateSignedIn() {
         console.log("UPDATE")
-        getAllClockedIn().then(currentlyClockedIn => this.setState({currentlyClockedIn}))
+        getAllSignedIn().then(currentlySignedIn => this.setState({currentlySignedIn}))
     }
 
     render() {
@@ -32,12 +32,12 @@ export default class App extends React.Component {
                     <h1 className="title">Titan Robotics Hour Logging</h1>
                     <img id="logo" src={roboticsLogo} alt="<Robotics logo>"/>
                 </div>
-                <div className="separator bold">Clock In or Register</div>
-                <ClockInBox updateFunc={this.updateClockedIn}/>
+                <div className="separator bold">Sign In or Register</div>
+                <SignInBox updateFunc={this.updateSignedIn}/>
                 <h2 className="no-bold">or</h2>
                 <RegisterBox/>
-                <div className="separator bold">Currently Clocked In</div>
-                <ClockedInList clockedIn={this.state.currentlyClockedIn} updateFunc={this.updateClockedIn} />
+                <div className="separator bold">Currently Signed In</div>
+                <SignedInList signedIn={this.state.currentlySignedIn} updateFunc={this.updateSignedIn} />
             </div>
         )
     }

@@ -1,9 +1,9 @@
 import React from 'react'
 import "./../assets/scss/shared.scss"
 import Button from "./button"
-import {getAllMembers, clockIn} from "./gsheetsApi"
+import {getAllMembers, signIn} from "./gsheetsApi"
 
-export default class ClockInBox extends React.Component {
+export default class SignInBox extends React.Component {
     constructor(props) {
         super(props)
 
@@ -13,7 +13,7 @@ export default class ClockInBox extends React.Component {
         this.handleTextChange = this.handleTextChange.bind(this)
         this.openDropDown = this.openDropDown.bind(this)
         this.closeDropDown = this.closeDropDown.bind(this)
-        this.handleClockInClick = this.handleClockInClick.bind(this)
+        this.handleSignInClick = this.handleSignInClick.bind(this)
         this.handleDropDownItemClick = this.handleDropDownItemClick.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
     }
@@ -81,11 +81,11 @@ export default class ClockInBox extends React.Component {
         setTimeout(() => this.setState({showDropDown: false}), 500)
     }
 
-    handleClockInClick() {
+    handleSignInClick() {
         this.closeDropDown()
         console.log(this.state)
         if (this.state.currentMember) {
-            clockIn(this.state.currentMember.ID)
+            signIn(this.state.currentMember.ID)
             this.changeInputTextTo("")
             setTimeout(this.props.updateFunc, 3000)
         } else if (this.state.nameIdValue !== "") {
@@ -95,7 +95,7 @@ export default class ClockInBox extends React.Component {
 
     handleDropDownItemClick(memberData) {
         this.changeInputTextTo(this.format(memberData))
-        setTimeout(this.handleClockInClick, 500)  // delay to allow state to update
+        setTimeout(this.handleSignInClick, 500)  // delay to allow state to update
     }
 
     handleKeyPress(event) {
@@ -103,7 +103,7 @@ export default class ClockInBox extends React.Component {
             if (this.state.currentMember) {
                 this.changeInputTextTo(this.format(this.state.currentMember))
             }
-            this.handleClockInClick()
+            this.handleSignInClick()
         }
     }
 
@@ -123,7 +123,7 @@ export default class ClockInBox extends React.Component {
             <>
                 <div className="row row-input pos-relative">
                     <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "25vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onFocus={this.openDropDown} onBlur={this.closeDropDown} onKeyPress={this.handleKeyPress} />
-                    <Button onClick={this.handleClockInClick}>Clock In</Button>
+                    <Button onClick={this.handleSignInClick}>Sign In</Button>
                     {this.state.showDropDown ? 
                         <div className="drop-down" style={{transform: `translate(${x}px, ${y}px)`, width: `${width}px`}}>
                             <p className="autocomplete">{this.state.autocompleteValue}</p>

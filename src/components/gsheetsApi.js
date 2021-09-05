@@ -26,9 +26,9 @@ export async function getAllMembers() {
     
 }
 
-export async function getAllClockedIn() {
-    const clockedInSheet = await getSheet("Currently Clocked In")
-    return await clockedInSheet.getRows()
+export async function getAllSignedIn() {
+    const signedInSheet = await getSheet("Currently Signed In")
+    return await signedInSheet.getRows()
 }
 
 export async function checkIfIdIsRegistered(id) {
@@ -85,10 +85,10 @@ export async function registerMember(name, id) {
     return false
 }
 
-export async function isClockedIn(id) {
-    const clockedIn = await getAllClockedIn()
+export async function isSignedIn(id) {
+    const signedIn = await getAllSignedIn()
 
-    for (let row of clockedIn) {
+    for (let row of signedIn) {
         if (row["ID"] === id) {
             return true
         }
@@ -97,16 +97,16 @@ export async function isClockedIn(id) {
     return false
 }
 
-export async function clockIn(id) {
+export async function signIn(id) {
     const isRegistered = await checkIfIdIsRegistered(id)
 
     if (isRegistered) {
-        if (await isClockedIn(id)) {
+        if (await isSignedIn(id)) {
             return true
         } else {
-            const clockedInSheet = doc.sheetsByTitle["Currently Clocked In"]
+            const signedInSheet = doc.sheetsByTitle["Currently Signed In"]
             const [date, time] = getDateTime()
-            await clockedInSheet.addRow({Date: date, Time: time, Name: await getName(id), ID: id})
+            await signedInSheet.addRow({Date: date, Time: time, Name: await getName(id), ID: id})
             return true
         }
     } else {
@@ -114,16 +114,16 @@ export async function clockIn(id) {
     }
 }
 
-export async function clockOut(id, outTime) {
+export async function signOut(id, outTime) {
     outTime = outTime ? outTime : getDateTime()[1]
 
-    let clockedIn = await getAllClockedIn()
+    let signedIn = await getAllSignedIn()
 
-    for (let clockedInRow of clockedIn) {
-        if (clockedInRow.ID === id) {
+    for (let signedInRow of signedIn) {
+        if (signedInRow.ID === id) {
             let hoursSheet = await getSheet("Hours")
-            await hoursSheet.addRow({Date: clockedInRow.Date, Name: await getName(id), ID: id, "Time In": clockedInRow.Time, "Time Out": outTime})
-            await clockedInRow.delete()
+            await hoursSheet.addRow({Date: signedInRow.Date, Name: await getName(id), ID: id, "Time In": signedInRow.Time, "Time Out": outTime})
+            await signedInRow.delete()
             return true
         }
     }
@@ -134,5 +134,9 @@ export async function clockOut(id, outTime) {
 function getDateTime() {
     const datetime = new Date()
 
-    return [datetime.toLocaleDateString(), `${datetime.getHours()}:${datetime.getMinutes()}`]
+    return [datetime.toLocaleDateString(), `${zeroPad(datetime.getHours())}:${zeroPad(datetime.getMinutes())}`]
+}
+
+function zeroPad(string) {
+    return string.length === 1? "0" + string : string
 }
