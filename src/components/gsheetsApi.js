@@ -96,7 +96,7 @@ export async function registerMember(name, id) {
             return true
         }
     } else {
-        const membersSheet = getSheet("Members")
+        const membersSheet = doc.sheetsByTitle["Members"]
         await membersSheet.addRow({Name: name, ID: id, "Date Added": getDateTime()[0]})
         return true
     }
