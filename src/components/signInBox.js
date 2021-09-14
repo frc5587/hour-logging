@@ -26,6 +26,10 @@ export default class SignInBox extends React.Component {
         if (text === "") {  // if input is blank, clear error message (if it exists)
             this.setState({error: ""})
         }
+
+        if (!this.state.success_txt) {
+            this.setState({success_txt: ""})
+        }
     }
 
     format(member, reverse=false) {
@@ -83,9 +87,11 @@ export default class SignInBox extends React.Component {
 
     handleSignInClick() {
         this.closeDropDown()
-        console.log(this.state)
         if (this.state.currentMember) {
             signIn(this.state.currentMember.ID)
+            console.log(this.state.success_txt)
+            this.setState({success_txt: `Log in Successful: ${this.state.currentMember.Name}`})
+            console.log(this.state.success_txt)
             this.changeInputTextTo("")
             setTimeout(this.props.updateFunc, 3000)
         } else if (this.state.nameIdValue !== "") {
@@ -132,6 +138,7 @@ export default class SignInBox extends React.Component {
                         ""}
                 </div>
                 {this.state.error ? <h3 className="error">Error: {this.state.error}</h3> : ""}
+                {this.state.success_txt ? <h3 className="success">{this.state.success_txt}</h3> : ""}
             </>
         )
     }
