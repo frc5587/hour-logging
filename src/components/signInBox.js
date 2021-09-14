@@ -7,7 +7,7 @@ export default class SignInBox extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {nameIdValue: "", autocompleteValue: "", currentMember: null, possibleMembers: [], memberData: [], showDropDown: false, error: ""}
+        this.state = {nameIdValue: "", autocompleteValue: "", currentMember: null, possibleMembers: [], memberData: [], showDropDown: false, error: "", success_txt: ""}
 
         this.inputRef = React.createRef();
         this.handleTextChange = this.handleTextChange.bind(this)
@@ -78,7 +78,7 @@ export default class SignInBox extends React.Component {
     closeDropDown() {
         // delay so that when someone clicks on the drop down menu it doesn't immediately close
         // instead, it can now process their input
-        setTimeout(() => this.setState({showDropDown: false}), 500)
+        setTimeout(() => this.setState({showDropDown: false}), 400)
     }
 
     handleSignInClick() {

@@ -106,6 +106,11 @@ ul.series {
     margin: 20px auto;
 }
 
+.success {
+    color: $light-blue;
+    margin: 20px auto;
+}
+
 .flex-center {
     justify-content: center;
     display: flex;
@@ -299,20 +304,48 @@ ul.series {
 }
 
 div.loader {
-    width: 20px;
-    height: 20px;
-    border-radius: 1000px;
-    border-top: 5px solid $text-color;
-    animation: rotate360 1s linear 0 infinite forwards normal;
+    height: 106px;
+    width: 106px;
+    border: 3px solid transparent;
+    border-bottom-color: $TR-red;
+    border-radius: 100%;
+    margin: auto;
+    position: relative;
+    animation: rotate360 infinite linear 1.5s;
+
+    &::before {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        margin: 5px;
+        height: 90px;
+        width: 90px;
+        border: 3px solid transparent;
+        border-bottom-color: $TR-blue;
+        border-radius: 100%;
+        animation: rotate360 infinite linear 2.25s;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        top: 0px;
+        margin: 13px;
+        height: 74px;
+        width: 74px;
+        border: 3px solid transparent;
+        border-bottom-color: $text-color;
+        border-radius: 100%;
+        animation: rotate360 infinite linear 1.5s;
+    }
 }
 
 @keyframes rotate360 {
     from {
-        rotate: 0deg;
-    }
-
-    to {
-        rotate: 360deg;
+        transform: rotate(0deg);
+    } to {
+        transform: rotate(360deg);
     }
     
 }
