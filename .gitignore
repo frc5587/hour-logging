@@ -9,8 +9,8 @@ tokens/
 # testing
 /coverage
 
-# production
-/build
+# production - removed so that the pi doesn't have to build it
+# /build
 
 # misc
 .DS_Store
