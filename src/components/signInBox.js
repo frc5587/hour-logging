@@ -16,15 +16,22 @@ export default class SignInBox extends React.Component {
         this.handleSignInClick = this.handleSignInClick.bind(this)
         this.handleDropDownItemClick = this.handleDropDownItemClick.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
+
+        getAllMembers().then(memberData => {this.setState({memberData});this.updateDropDown(this.state.nameIdValue)})
     }
 
     handleTextChange(event) {
         let text = event.target.value
+        console.log(text)
         this.setState({nameIdValue: text})
         this.updateDropDown(text)
 
         if (text === "") {  // if input is blank, clear error message (if it exists)
             this.setState({error: ""})
+            this.closeDropDown(true)
+        } else {
+            console.log("setting...")
+            this.openDropDown()
         }
 
         if (!this.state.success_txt) {
@@ -79,19 +86,21 @@ export default class SignInBox extends React.Component {
         getAllMembers().then(memberData => {this.setState({memberData});this.updateDropDown(this.state.nameIdValue)})
     }
 
-    closeDropDown() {
-        // delay so that when someone clicks on the drop down menu it doesn't immediately close
-        // instead, it can now process their input
-        setTimeout(() => this.setState({showDropDown: false}), 400)
+    closeDropDown(noDelay=false) {
+        if (noDelay) {
+            this.setState({showDropDown: false})
+        } else {
+            // delay so that when someone clicks on the drop down menu it doesn't immediately close
+            // instead, it can now process their input
+            setTimeout(() => this.setState({showDropDown: false}), 400)
+        }
     }
 
     handleSignInClick() {
         this.closeDropDown()
         if (this.state.currentMember) {
             signIn(this.state.currentMember.ID)
-            console.log(this.state.success_txt)
             this.setState({success_txt: `Log in Successful: ${this.state.currentMember.Name}`})
-            console.log(this.state.success_txt)
             this.changeInputTextTo("")
             setTimeout(this.props.updateFunc, 3000)
         } else if (this.state.nameIdValue !== "") {
@@ -128,7 +137,7 @@ export default class SignInBox extends React.Component {
         return (
             <>
                 <div className="row row-input pos-relative">
-                    <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "40vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onFocus={this.openDropDown} onBlur={this.closeDropDown} onKeyPress={this.handleKeyPress} />
+                    <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "40vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onBlur={this.closeDropDown} onKeyPress={this.handleKeyPress} />
                     <Button onClick={this.handleSignInClick}>Sign In</Button>
                     {this.state.showDropDown ? 
                         <div className="drop-down" style={{transform: `translate(${x}px, ${y}px)`, width: `${width}px`}}>

@@ -8,10 +8,13 @@ export default class SignedInList extends React.Component {
         super(props)
 
         this.signOut = this.signOut.bind(this)
+        this.state = {pendingOut: []}
     }
 
     signOut(id) {
-        signOut(id).then(this.props.updateFunc)
+
+        this.setState({pendingOut: [...this.state.pendingOut, id]})
+        signOut(id).then(this.props.updateFunc).then(() => {this.setState({pendingOut: this.state.pendingOut.splice(this.state.pendingOut.indexOf(id), 1)})})
     }
 
     render() {
@@ -25,7 +28,7 @@ export default class SignedInList extends React.Component {
                 </li>
                 {
                     this.props.signedIn.length > 0? 
-                    this.props.signedIn.map((log, i) => <SignedInItem data={log} onSignedOutBtn={() => this.signOut(log.ID)} key={i}/>) : 
+                    this.props.signedIn.map(log => <SignedInItem data={log} onSignedOutBtn={() => this.signOut(log.ID)} pendingOutList={this.state.pendingOut} key={log.Name}/>) : 
                         <li className="flex-center"><h3>No one is signed in</h3></li>
                 }
             </ul>
@@ -33,11 +36,11 @@ export default class SignedInList extends React.Component {
     }
 }
 
-const SignedInItem = ({data, onSignedOutBtn}) => (
+const SignedInItem = ({data, onSignedOutBtn, pendingOutList}) => (
     <li className="signed-in-list-item">
         <p>{data.Date}</p>
         <p>{data.Time}</p>
         <p>{data.Name}</p>
-        <Button smallBtn onClick={onSignedOutBtn}>Sign Out</Button>
+        {!pendingOutList.includes(data.ID)? <Button smallBtn onClick={onSignedOutBtn}>Sign Out</Button> : ""}
     </li>
 )
