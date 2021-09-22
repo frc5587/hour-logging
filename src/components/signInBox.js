@@ -22,7 +22,6 @@ export default class SignInBox extends React.Component {
 
     handleTextChange(event) {
         let text = event.target.value
-        console.log(text)
         this.setState({nameIdValue: text})
         this.updateDropDown(text)
 
@@ -30,11 +29,10 @@ export default class SignInBox extends React.Component {
             this.setState({error: ""})
             this.closeDropDown(true)
         } else {
-            console.log("setting...")
             this.openDropDown()
         }
 
-        if (!this.state.success_txt) {
+        if (this.state.success_txt) {
             this.setState({success_txt: ""})
         }
     }
@@ -99,9 +97,11 @@ export default class SignInBox extends React.Component {
     handleSignInClick() {
         this.closeDropDown()
         if (this.state.currentMember) {
-            signIn(this.state.currentMember.ID)
-            this.setState({success_txt: `Log in Successful: ${this.state.currentMember.Name}`})
+            let member = this.state.currentMember
+
+            signIn(member.ID)
             this.changeInputTextTo("")
+            this.setState({success_txt: `Log in Successful: ${member.Name}`})
             setTimeout(this.props.updateFunc, 3000)
         } else if (this.state.nameIdValue !== "") {
             this.setState({error: "Unknown Member"})
@@ -137,7 +137,7 @@ export default class SignInBox extends React.Component {
         return (
             <>
                 <div className="row row-input pos-relative">
-                    <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "40vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onBlur={this.closeDropDown} onKeyPress={this.handleKeyPress} />
+                    <input type="text" placeholder="Name or ID" autoFocus="autofocus" style={{zIndex: 100, width: "40vw"}} spellCheck="false" value={this.state.nameIdValue} onChange={this.handleTextChange} ref={this.inputRef} onBlur={() => {this.closeDropDown()}} onKeyPress={this.handleKeyPress} />
                     <Button onClick={this.handleSignInClick}>Sign In</Button>
                     {this.state.showDropDown ? 
                         <div className="drop-down" style={{transform: `translate(${x}px, ${y}px)`, width: `${width}px`}}>
