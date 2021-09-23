@@ -12,12 +12,19 @@ export default class SignedInList extends React.Component {
     }
 
     signOut(id) {
-
+        console.log(id)
         this.setState({pendingOut: [...this.state.pendingOut, id]})
-        signOut(id).then(this.props.updateFunc).then(() => {this.setState({pendingOut: this.state.pendingOut.splice(this.state.pendingOut.indexOf(id), 1)})})
+        signOut(id).then(this.props.updateFunc).then(() => {
+            setTimeout(() => {
+                let pendingOut = this.state.pendingOut
+                pendingOut.splice(this.state.pendingOut.indexOf(id), 1)
+                this.setState({pendingOut})
+            }, 10000)
+        })
     }
 
     render() {
+        console.log(this.state.pendingOut)
         return (
             <ul className="series">
                 <li className="bold signed-in-list-item">
@@ -42,5 +49,6 @@ const SignedInItem = ({data, onSignedOutBtn, pendingOutList}) => (
         <p>{data.Time}</p>
         <p>{data.Name}</p>
         {!pendingOutList.includes(data.ID)? <Button smallBtn onClick={onSignedOutBtn}>Sign Out</Button> : ""}
+        {/* {console.log(data.Name, pendingOutList.includes(data.ID))} */}
     </li>
 )

@@ -6,6 +6,8 @@ const doc = new GoogleSpreadsheet(DOC_ID);
 
 var loaded = false
 
+// TODO: make a local copy of the spreadsheet somehow so that it can do bulk updates, this was stuff can be more accurate and it will respond faster
+
 const loader = (async () => {
     await doc.useServiceAccountAuth(credentials)
     await doc.loadInfo()
