@@ -1,7 +1,8 @@
 import React from 'react'
 import "./../assets/scss/shared.scss"
 import Button from "./button"
-import {getAllMembers, signIn} from "./gsheetsApi"
+import {getAllMembers, signIn} from "./db/gsheetsApi"
+import LocalDatabase from './db/LocalGSheetsDatabase'
 
 export default class SignInBox extends React.Component {
     constructor(props) {

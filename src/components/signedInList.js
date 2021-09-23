@@ -1,7 +1,7 @@
 import React from 'react'
 import "./../assets/scss/shared.scss"
 import Button from "./button"
-import {signOut} from "./gsheetsApi"
+import {signOut} from "./db/gsheetsApi"
 
 export default class SignedInList extends React.Component {
     constructor(props) {

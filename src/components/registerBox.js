@@ -1,7 +1,7 @@
 import React from 'react'
 import "./../assets/scss/shared.scss"
 import Button from "./button"
-import {registerMember} from "./gsheetsApi"
+import {registerMember} from "./db/gsheetsApi"
 
 export default class RegisterBox extends React.Component {
     constructor() {
