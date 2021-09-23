@@ -1,8 +1,8 @@
 import {GoogleSpreadsheet} from "google-spreadsheet"
 import credentials from "../assets/tokens/service_auth_token.json"
+import spreadsheet from "../assets/tokens/spreadsheet.json"
 
-const DOC_ID = '1Yvt_H-IMjBmQDAQPqMY9TJzSgFruGOBLCZbbppt72dk'
-const doc = new GoogleSpreadsheet(DOC_ID);
+const doc = new GoogleSpreadsheet(spreadsheet.ID);
 
 var loaded = false
 
