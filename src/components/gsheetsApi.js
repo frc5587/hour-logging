@@ -6,8 +6,6 @@ const doc = new GoogleSpreadsheet(spreadsheet.ID);
 
 var loaded = false
 
-// TODO: make a local copy of the spreadsheet somehow so that it can do bulk updates, this was stuff can be more accurate and it will respond faster
-
 const loader = (async () => {
     await doc.useServiceAccountAuth(credentials)
     await doc.loadInfo()
@@ -148,6 +146,42 @@ export async function signOut(id, outTime) {
         }
     }
     return false
+}
+
+export async function signOutMultiple(ids, outTimes) {
+    if (outTimes === undefined) {
+        outTimes = ids.map(() => getDateTime()[1])
+    } else if (ids.length !== outTimes.length) {
+        throw new Error("`OutTimes` needs to be the same length as `ids`")
+    }
+    let signedInSheet = await getSheet("Currently Signed In")
+    let signedIn = await signedInSheet.getRows()
+
+    let header = signIn[0]._sheet.headerValues
+    let allIDs = signedIn.map(v => v.ID)
+    let newSignedOuts = []
+    
+    for (let [id, outTime] of ids.map((v, i) => [v, outTimes[i]])) {
+        let idx = allIDs.indexOf(id) 
+        if (idx !== -1) {
+            let row = signedIn.splice(idx, 1)[0]
+            newSignedOuts.push({Date: row.Date, Name: await getName(id), ID: id, "Time In": row.Time, "Time Out": outTime})
+
+        } else {
+            console.log("Not signed in!", id)
+        }
+    }
+
+    await signedInSheet.clear()
+    await signedInSheet.setHeaderRow(header)
+    
+    if (signedIn.length > 0) {
+        await signedInSheet.addRows(signedIn)
+    }
+
+    let hoursSheet = await getSheet("Hours")
+    await hoursSheet.addRows(newSignedOuts)
+
 }
 
 function getDateTime() {

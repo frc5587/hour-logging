@@ -19,8 +19,8 @@ export default class App extends React.Component {
     componentDidMount() {
         setTimeout(this.updateSignedIn, 500);
 
-        window.addEventListener('offline', () => {this.onlineChangeHandler(false)});
-        window.addEventListener('online', () => {this.onlineChangeHandler(true)});
+        window.addEventListener('offline', () => this.onlineChangeHandler(false));
+        window.addEventListener('online', () => this.onlineChangeHandler(true));
     }
 
     onlineChangeHandler(isOnline) {
