@@ -96,12 +96,16 @@ export default class SignInBox extends React.Component {
 
     handleSignInClick() {
         this.closeDropDown()
-        if (this.state.currentMember) {
+        if (this.state.currentMember && this.props.signedIn.map(v => v.ID).includes(this.state.currentMember.ID)) {
+            this.changeInputTextTo("")
+            this.setState({success_txt: `Already Signed In: ${this.state.currentMember.Name}`})
+        } else if (this.state.currentMember) {
             let member = this.state.currentMember
 
             signIn(member.ID)
+            this.props.localSignInFunc(member.Name, member.ID)
             this.changeInputTextTo("")
-            this.setState({success_txt: `Log in Successful: ${member.Name}`})
+            this.setState({success_txt: `Sign in Successful: ${member.Name}`})
             setTimeout(this.props.updateFunc, 3000)
         } else if (this.state.nameIdValue !== "") {
             this.setState({error: "Unknown Member"})

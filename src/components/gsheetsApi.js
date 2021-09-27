@@ -132,6 +132,9 @@ export async function signIn(id) {
     }
 }
 
+/** 
+ * uses tons of API calls, use signOutMultiple instead for signing out more than one person at a time
+ */
 export async function signOut(id, outTime) {
     outTime = outTime ? outTime : getDateTime()[1]
 
@@ -157,20 +160,24 @@ export async function signOutMultiple(ids, outTimes) {
     let signedInSheet = await getSheet("Currently Signed In")
     let signedIn = await signedInSheet.getRows()
 
-    let header = signIn[0]._sheet.headerValues
+    let header = signedIn[0]._sheet.headerValues
     let allIDs = signedIn.map(v => v.ID)
     let newSignedOuts = []
     
+    let removes = []
     for (let [id, outTime] of ids.map((v, i) => [v, outTimes[i]])) {
         let idx = allIDs.indexOf(id) 
         if (idx !== -1) {
-            let row = signedIn.splice(idx, 1)[0]
+            let row = signedIn[idx]
+            removes.push(idx)
             newSignedOuts.push({Date: row.Date, Name: await getName(id), ID: id, "Time In": row.Time, "Time Out": outTime})
 
         } else {
             console.log("Not signed in!", id)
         }
     }
+
+    signedIn = signedIn.filter((v, i) => !removes.includes(i))
 
     await signedInSheet.clear()
     await signedInSheet.setHeaderRow(header)
@@ -184,7 +191,7 @@ export async function signOutMultiple(ids, outTimes) {
 
 }
 
-function getDateTime() {
+export function getDateTime() {
     const datetime = new Date()
 
     return [datetime.toLocaleDateString(), `${zeroPad(datetime.getHours())}:${zeroPad(datetime.getMinutes())}`]

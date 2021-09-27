@@ -4,16 +4,19 @@ import roboticsLogo from "./assets/images/robotics_logo.svg"
 import RegisterBox from "./components/registerBox"
 import SignInBox from "./components/signInBox"
 import SignedInList from "./components/signedInList"
-import {getAllSignedIn} from "./components/gsheetsApi"
+import {getAllSignedIn, getDateTime, signOut, signOutMultiple} from "./components/gsheetsApi"
 
 
 export default class App extends React.Component {
     constructor() {
         super()
 
-        this.state = {currentlySignedIn: [], isOnline: window.navigator.onLine}
+        this.state = {currentlySignedIn: [], pendingSignIn:[], pendingSignOut: [], isOnline: window.navigator.onLine}
 
         this.updateSignedIn = this.updateSignedIn.bind(this)
+        this.addNewLocalSignIn = this.addNewLocalSignIn.bind(this)
+        this.handleSignOut = this.handleSignOut.bind(this)
+        this.handleMultiSignOut = this.handleMultiSignOut.bind(this)
     }
 
     componentDidMount() {
@@ -28,7 +31,58 @@ export default class App extends React.Component {
     }
 
     updateSignedIn() {
-        getAllSignedIn().then(currentlySignedIn => this.setState({currentlySignedIn}))
+        getAllSignedIn().then(currentlySignedIn => {
+            let pendingSignIn = []
+            let signedInIDs = currentlySignedIn.map(v => v.ID)
+
+            for (let {ID} of this.state.pendingSignIn) {
+                if (!signedInIDs.includes(ID)) {
+                    pendingSignIn.push(ID)
+                }
+            }
+
+            let pendingSignOut = []
+            for (let ID in this.state.pendingSignOut) {
+                if (signedInIDs.includes(ID)) {
+                    pendingSignOut.push(ID)
+                    let idx = signedInIDs.indexOf(ID)
+                    let member = currentlySignedIn[idx]
+                    currentlySignedIn[idx] = {...member, pending: true}
+                }
+            }
+            this.setState({currentlySignedIn, pendingSignIn, pendingSignOut})
+        })
+    }
+
+    addNewLocalSignIn(Name,  ID) {
+        let [Date, Time] = getDateTime()
+        this.setState({pendingSignIn: this.state.pendingSignIn.concat([{Name, Time, Date, ID, pending: true}])})
+    }
+
+    handleSignOut(ID) {
+        let currentlySignedIn = this.state.currentlySignedIn.map(v => {
+            if (v.ID === ID) {
+                return {...v, pending: true}
+            } else {
+                return v
+            }
+        })
+
+        this.setState({currentlySignedIn, pendingSignOut: this.state.pendingSignOut.concat(ID)})
+        signOut(ID).then(this.updateSignedIn)
+    }
+
+    handleMultiSignOut(IDs) {
+        let currentlySignedIn = this.state.currentlySignedIn.map(v => {
+            if (IDs.includes(v.ID)) {
+                return {...v, pending: true}
+            } else {
+                return v
+            }
+        })
+
+        this.setState({currentlySignedIn, pendingSignOut: this.state.pendingSignOut.concat(IDs)})
+        signOutMultiple(IDs).then(this.updateSignedIn)
     }
 
     render() {
@@ -40,11 +94,10 @@ export default class App extends React.Component {
                         <img id="logo" src={roboticsLogo} alt="<Robotics logo>"/>
                     </div>
                     <div className="separator bold">Sign In or Register</div>
-                    <SignInBox updateFunc={this.updateSignedIn}/>
+                    <SignInBox localSignInFunc={this.addNewLocalSignIn} updateFunc={this.updateSignedIn} signedIn={this.state.currentlySignedIn.concat(this.state.pendingSignIn)}/>
                     <h2 className="no-bold">or</h2>
-                    <RegisterBox/>
-                    <div className="separator bold">Currently Signed In</div>
-                    <SignedInList signedIn={this.state.currentlySignedIn} updateFunc={this.updateSignedIn} />
+                    <RegisterBox />
+                    <SignedInList multiSignOut={this.handleMultiSignOut} signOut={this.handleSignOut} signedIn={this.state.currentlySignedIn.concat(this.state.pendingSignIn)} updateFunc={this.updateSignedIn} />
                 </div>
             )
         } else {
