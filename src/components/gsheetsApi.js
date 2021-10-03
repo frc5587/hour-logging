@@ -9,24 +9,23 @@ var loaded = false
 const loader = (async () => {
     await doc.useServiceAccountAuth(credentials)
     await doc.loadInfo()
-
-    checkIfLoggedInTooLong()
-    setInterval(checkIfLoggedInTooLong, 3600000) // repeats every hour
 })().then(() => loaded = true)
 
 export async function checkIfLoggedInTooLong() {
     const rows = await getAllSignedIn()
     const peopleToSignOut = []
-
+    
     for (let row of rows) {
         if (new Date(row["Date"]) < getTodaysDate()) {
             peopleToSignOut.push(row["ID"])
         }
     }
-
-    for (let id of peopleToSignOut) {
-        await signOut(id, "18:00")  // signs people out at 6:00 pm
+    
+    if (peopleToSignOut.length > 0) {
+        await signOutMultiple(peopleToSignOut, peopleToSignOut.map(() => "18:00"))
     }
+
+    console.log("Check logged in", getDateTime(), peopleToSignOut, rows)
 }
 
 export async function getSheet(sheetName) {
@@ -194,13 +193,15 @@ export async function signOutMultiple(ids, outTimes) {
 export function getDateTime() {
     const datetime = new Date()
 
-    return [datetime.toLocaleDateString(), `${zeroPad(datetime.getHours())}:${zeroPad(datetime.getMinutes())}`]
+    // Needs to pass in the locale, otherwise the format isn't consistent
+    return [datetime.toLocaleDateString('en-US'), `${zeroPad(datetime.getHours())}:${zeroPad(datetime.getMinutes())}`]
 }
 
 function zeroPad(string) {
     return ("" + string).length === 1? "0" + string : string
 }
 
-function getTodaysDate() {
-    return new Date(new Date().toLocaleDateString())
+export function getTodaysDate() {
+    // Needs to pass in the locale, otherwise the format isn't consistent
+    return new Date(new Date().toLocaleDateString('en-US'))
 }
