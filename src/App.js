@@ -4,7 +4,7 @@ import roboticsLogo from "./assets/images/robotics_logo.svg"
 import RegisterBox from "./components/registerBox"
 import SignInBox from "./components/signInBox"
 import SignedInList from "./components/signedInList"
-import {getAllSignedIn, getDateTime, signOut, signOutMultiple} from "./components/gsheetsApi"
+import {getAllSignedIn, getDateTime, signOut, signOutMultiple, getTodaysDate} from "./components/gsheetsApi"
 
 
 export default class App extends React.Component {
@@ -17,6 +17,36 @@ export default class App extends React.Component {
         this.addNewLocalSignIn = this.addNewLocalSignIn.bind(this)
         this.handleSignOut = this.handleSignOut.bind(this)
         this.handleMultiSignOut = this.handleMultiSignOut.bind(this)
+        this.checkIfSignedInTooLong = this.checkIfSignedInTooLong.bind(this)
+    }
+
+    async checkIfSignedInTooLong() {
+        const peopleToSignOut = []
+        
+        for (let row of this.state.currentlySignedIn) {
+            if (new Date(row["Date"]) < getTodaysDate()) {
+                peopleToSignOut.push(row["ID"])
+            }
+        }
+        
+        if (peopleToSignOut.length > 0) {
+            await signOutMultiple(peopleToSignOut, peopleToSignOut.map(() => "18:00"))
+        
+            let currentlySignedIn = this.state.currentlySignedIn.map(v => {
+                if (peopleToSignOut.includes(v.ID)) {
+                    return {...v, pending: true}
+                } else {
+                    return v
+                }
+            })
+        
+            let pendingSignOut = this.state.pendingSignOut.concat(peopleToSignOut)
+    
+            this.setState({pendingSignOut, currentlySignedIn})
+            setTimeout(this.updateSignedIn, 3000)
+        }
+        
+        console.log("Check logged in", getDateTime(), peopleToSignOut, this.state.currentlySignedIn)
     }
 
     componentDidMount() {
@@ -34,13 +64,13 @@ export default class App extends React.Component {
         getAllSignedIn().then(currentlySignedIn => {
             let pendingSignIn = []
             let signedInIDs = currentlySignedIn.map(v => v.ID)
-
+            
             for (let {ID} of this.state.pendingSignIn) {
                 if (!signedInIDs.includes(ID)) {
                     pendingSignIn.push(ID)
                 }
             }
-
+            
             let pendingSignOut = []
             for (let ID in this.state.pendingSignOut) {
                 if (signedInIDs.includes(ID)) {
@@ -50,7 +80,15 @@ export default class App extends React.Component {
                     currentlySignedIn[idx] = {...member, pending: true}
                 }
             }
-            this.setState({currentlySignedIn, pendingSignIn, pendingSignOut})
+            
+            this.setState({currentlySignedIn, pendingSignIn, pendingSignOut}, () => {
+                if (!this.notFirstRefresh) {
+                    this.checkIfSignedInTooLong()
+                    setInterval(this.checkIfSignedInTooLong, 3600000) // repeats every hour
+                }
+            })
+
+            this.notFirstRefresh = true
         })
     }
 
