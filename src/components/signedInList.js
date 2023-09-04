@@ -1,7 +1,7 @@
 import React from 'react'
 import "./../assets/scss/shared.scss"
 import Button from "./button"
-import {signOut} from "./gsheetsApi"
+import {formatRow} from "./gsheetsApi"
 
 export default class SignedInList extends React.Component {
     constructor(props) {
@@ -39,16 +39,23 @@ export default class SignedInList extends React.Component {
                         <h2>Date</h2>
                         <h2>Time In</h2>
                         <h2>Name</h2>
-                        <Button smallBtn onMouseUp={this.handleMultiSignOutClick} onMouseDown={this.setLastMouseDown}>Sign Out All</Button>
+                        <Button smallBtn onMouseUp={this.handleMultiSignOutClick} onMouseDown={this.setLastMouseDown}>
+                            Sign Out All
+                        </Button>
                     </li>
-                    {
-                        this.props.signedIn.length > 0? 
-                        this.props.signedIn.map(log => <SignedInItem data={log} onSignedOutBtn={() => this.props.signOut(log.ID)} key={log.Name}/>) : 
-                            <li className="flex-center"><h3>No one is signed in</h3></li>
-                    }
+                    {this.props.signedIn.length > 0 ? (
+                        this.props.signedIn.map((log) => {
+                            let info = log.hasOwnProperty("_rawData") ? formatRow(log) : log;
+                            return <SignedInItem data={info} onSignedOutBtn={() => this.props.signOut(info.ID)} key={info.ID} />;
+                        })
+                    ) : (
+                        <li className="flex-center">
+                            <h3>No one is signed in</h3>
+                        </li>
+                    )}
                 </ul>
             </>
-        )
+        );
     }
 }
 

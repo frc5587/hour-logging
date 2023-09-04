@@ -1,7 +1,7 @@
 import React from 'react'
 import "./../assets/scss/shared.scss"
 import Button from "./button"
-import {getAllMembers, signIn} from "./gsheetsApi"
+import {formatRow, getAllMembers, signIn} from "./gsheetsApi"
 
 export default class SignInBox extends React.Component {
     constructor(props) {
@@ -16,8 +16,13 @@ export default class SignInBox extends React.Component {
         this.handleSignInClick = this.handleSignInClick.bind(this)
         this.handleDropDownItemClick = this.handleDropDownItemClick.bind(this)
         this.handleKeyPress = this.handleKeyPress.bind(this)
+    }
 
-        getAllMembers().then(memberData => {this.setState({memberData});this.updateDropDown(this.state.nameIdValue)})
+    componentDidMount() {
+        getAllMembers().then((memberData) => {
+            this.setState({memberData: memberData});
+            this.updateDropDown(this.state.nameIdValue);
+        });
     }
 
     handleTextChange(event) {
@@ -54,7 +59,8 @@ export default class SignInBox extends React.Component {
             let autocompleteValue =  ""
             let currentMember = null
 
-            for (let member of this.state.memberData) {
+            for (let mem of this.state.memberData) {
+                let member = formatRow(mem);
                 let [fwd, rvs] = [this.format(member), this.format(member, true)]
                 let cor = ""
 

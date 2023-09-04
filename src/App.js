@@ -4,7 +4,7 @@ import roboticsLogo from "./assets/images/robotics_logo.svg"
 import RegisterBox from "./components/registerBox"
 import SignInBox from "./components/signInBox"
 import SignedInList from "./components/signedInList"
-import {getAllSignedIn, getDateTime, signOut, signOutMultiple, getTodaysDate} from "./components/gsheetsApi"
+import {getAllSignedIn, getDateTime, signOut, signOutMultiple, getTodaysDate, formatRow} from "./components/gsheetsApi"
 
 
 export default class App extends React.Component {
@@ -63,7 +63,10 @@ export default class App extends React.Component {
     updateSignedIn() {
         getAllSignedIn().then(currentlySignedIn => {
             let pendingSignIn = []
-            let signedInIDs = currentlySignedIn.map(v => v.ID)
+            let signedInIDs = currentlySignedIn.map((v) => {
+                let person = formatRow(v);
+                return person.ID;
+            });
             
             for (let {ID} of this.state.pendingSignIn) {
                 if (!signedInIDs.includes(ID)) {
@@ -99,10 +102,11 @@ export default class App extends React.Component {
 
     handleSignOut(ID) {
         let currentlySignedIn = this.state.currentlySignedIn.map(v => {
-            if (v.ID === ID) {
-                return {...v, pending: true}
+            let row = formatRow(v);
+            if (row.ID === ID) {
+                return {...row, pending: true}
             } else {
-                return v
+                return row
             }
         })
 

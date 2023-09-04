@@ -1,23 +1,38 @@
 import {GoogleSpreadsheet} from "google-spreadsheet"
-import credentials from "../assets/tokens/service_auth_token.json"
 import spreadsheet from "../assets/tokens/spreadsheet.json"
+import {getToken} from "./auth";
 
-const doc = new GoogleSpreadsheet(spreadsheet.ID);
-
+let doc;
 var loaded = false
 
 const loader = (async () => {
-    await doc.useServiceAccountAuth(credentials)
+    let token = (await getToken()).access_token;
+    doc = new GoogleSpreadsheet(spreadsheet.ID, {token: await token});
     await doc.loadInfo()
 })().then(() => loaded = true)
+
+export function formatRow(row) {
+    let finalRow = {};
+    if(row.hasOwnProperty("_worksheet")) {
+        for(let i = 0; i < row["_worksheet"]["_headerValues"].length; i++) {
+            let title = row["_worksheet"]["_headerValues"][i];
+            finalRow[title] = row["_rawData"][i]
+        }
+    }
+    else {
+        finalRow = row;
+    }
+    return finalRow;
+}
 
 export async function checkIfLoggedInTooLong() {
     const rows = await getAllSignedIn()
     const peopleToSignOut = []
     
     for (let row of rows) {
-        if (new Date(row["Date"]) < getTodaysDate()) {
-            peopleToSignOut.push(row["ID"])
+        let rowFormatted = formatRow(row)
+        if (new Date(rowFormatted["Date"]) < getTodaysDate()) {
+            peopleToSignOut.push(rowFormatted["ID"])
         }
     }
     
@@ -52,7 +67,8 @@ export async function checkIfIdIsRegistered(id) {
     const rows = await getAllMembers()
 
     for (const row of rows) {
-        if (row["ID"] === id) {
+        let rowFormatted = formatRow(row)
+        if (rowFormatted.ID === id) {
             return true
         }
     }
@@ -64,8 +80,9 @@ export async function getName(id) {
     const rows = await getAllMembers()
 
     for (const row of rows) {
-        if (row["ID"] === id) {
-            return row["Name"]
+        let rowFormatted = formatRow(row);
+        if (rowFormatted["ID"] === id) {
+            return rowFormatted["Name"]
         }
     }
     return null
@@ -140,9 +157,10 @@ export async function signOut(id, outTime) {
     let signedIn = await getAllSignedIn()
 
     for (let signedInRow of signedIn) {
-        if (signedInRow.ID === id) {
+        let signedInRowFormatted = formatRow(signedInRow);
+        if (signedInRowFormatted.ID === id) {
             let hoursSheet = await getSheet("Hours")
-            await hoursSheet.addRow({Date: signedInRow.Date, Name: await getName(id), ID: id, "Time In": signedInRow.Time, "Time Out": outTime})
+            await hoursSheet.addRow({Date: signedInRowFormatted.Date, Name: await getName(id), ID: id, "Time In": signedInRowFormatted.Time, "Time Out": outTime})
             await signedInRow.delete()
             return true
         }
