@@ -9,8 +9,9 @@ tokens/
 # testing
 /coverage
 
-# production - removed so that the pi doesn't have to build it
-# /build
+# KEEP THIS LINE IN TO AVOID CREDENTIAL LEAKS!!!!
+# TO TRANSFER BUILD TO PI, USE A FLASH DRIVE!!!!
+/build
 
 # misc
 .DS_Store
