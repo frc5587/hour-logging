@@ -1,6 +1,6 @@
 import {GoogleSpreadsheet} from "google-spreadsheet"
 import spreadsheet from "../assets/tokens/spreadsheet.json"
-import {getToken} from "./auth";
+import {getToken, tokenIsExpired} from "./auth";
 
 let doc;
 var loaded = false
@@ -44,7 +44,7 @@ export async function checkIfLoggedInTooLong() {
 }
 
 export async function getSheet(sheetName) {
-    if (loaded) {
+    if (loaded && !tokenIsExpired()) {
         return doc.sheetsByTitle[sheetName]
     } else {
         await loader
