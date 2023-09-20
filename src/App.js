@@ -24,8 +24,9 @@ export default class App extends React.Component {
         const peopleToSignOut = []
         
         for (let row of this.state.currentlySignedIn) {
-            if (new Date(row["Date"]) < getTodaysDate()) {
-                peopleToSignOut.push(row["ID"])
+            let rowFormatted = formatRow(row);
+            if (new Date(rowFormatted["Date"]) < getTodaysDate()) {
+                peopleToSignOut.push(rowFormatted["ID"])
             }
         }
         
@@ -88,6 +89,7 @@ export default class App extends React.Component {
                 if (!this.notFirstRefresh) {
                     this.checkIfSignedInTooLong()
                     setInterval(this.checkIfSignedInTooLong, 3600000) // repeats every hour
+                    console.log("check if signed in")
                 }
             })
 

@@ -175,14 +175,19 @@ export async function signOutMultiple(ids, outTimes) {
         throw new Error("`OutTimes` needs to be the same length as `ids`")
     }
     let signedInSheet = await getSheet("Currently Signed In")
-    let signedIn = await signedInSheet.getRows()
+    let signedInUnformatted = await signedInSheet.getRows();
+    let signedIn = []
+    for (const row of signedInUnformatted) {
+        let rowFormatted = formatRow(row);
+        signedIn.push(rowFormatted);
+    }
 
-    let header = signedIn[0]._sheet.headerValues
+    let header = signedInUnformatted[0]._worksheet._headerValues
     let allIDs = signedIn.map(v => v.ID)
     let newSignedOuts = []
     
     let removes = []
-    for (let [id, outTime] of ids.map((v, i) => [v, outTimes[i]])) {
+    for (let [id, outTime] of allIDs.map((v, i) => [v, outTimes[i]])) {
         let idx = allIDs.indexOf(id) 
         if (idx !== -1) {
             let row = signedIn[idx]
