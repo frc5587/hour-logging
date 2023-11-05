@@ -15,7 +15,7 @@ export var createJWT = () => {
         iss: credentials.client_email, // this must be a service account email!
         scope: "https://www.googleapis.com/auth/spreadsheets", // read/write permissions for spreadsheets
         aud: credentials.token_uri,
-        exp: Math.trunc(Date.now() / 1000) + 120,//3600, // expires in current time in seconds plus one hour
+        exp: Math.trunc(Date.now() / 1000) + 3600, // expires in current time in seconds plus one hour
         iat: Math.trunc(Date.now() / 1000),  // issued at current time in secconds"
     };
     let claimsetString = JSON.stringify(claimset);

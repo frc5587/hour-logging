@@ -45,7 +45,7 @@ export default class SignedInList extends React.Component {
                     </li>
                     {this.props.signedIn.length > 0 ? (
                         this.props.signedIn.map((log) => {
-                            let info = log.hasOwnProperty("_rawData") ? formatRow(log) : log;
+                            let info = formatRow(log);
                             return <SignedInItem data={info} onSignedOutBtn={() => this.props.signOut(info.ID)} key={info.ID} />;
                         })
                     ) : (
